@@ -98,7 +98,7 @@ body {
 }
 
 .header .inner .top_bar .logo {
-    width: 90px;
+    width: 100px;
 }
 
 .header .inner .top_bar .logo a {
@@ -183,7 +183,7 @@ body {
 
 .main_visual {
     width: 100%;
-    height: 540px;
+    height: 710px;
     background: url('../img/main_visual.jpg') center center / cover no-repeat;
     position: relative;
     z-index: 1;
@@ -283,7 +283,8 @@ body {
 
 .new .inner .swiper-slide a .image {
     width: 100%;
-    height: 168px;
+    padding-bottom: 100%;
+    position: relative;
     border-radius: 5px;
     overflow: hidden;
 }
@@ -292,6 +293,9 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    position: absolute;
+    left: 0;
+    top: 0;
 
 }
 
@@ -388,7 +392,7 @@ body {
     border: 1px solid #F7B9C7;
     border-radius: 50px;
     color: #F7B9C7;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .best .inner .title {
@@ -401,7 +405,7 @@ body {
 
 .best .inner .title .text h3 {}
 
-.best .inner .title .text p {}
+.best .inner .title .text p {} 
 
 .best .inner .title .more_btn {
     font-size: 14px;
@@ -413,21 +417,25 @@ body {
     align-items: center;
 
 }
-
+.best .period li.is-active{
+    background: rgba(247, 185, 200, 0.3);
+}
 .best .Best-swiper {
-    margin-top: 10px;
+    margin-top: 20px;
     position: static;
 }
-
 .best .Best-swiper .swiper-slide .item {
     display: flex;
     align-items: center;
     gap: 9px;
+    margin-bottom: 9px;
 }
 
 .best .Best-swiper .swiper-slide .item>img {
     width: 109px;
     object-fit: cover;
+    border-radius: 5px;
+    overflow: hidden;
 }
 
 .best .Best-swiper .swiper-slide .item .item_info {
@@ -449,7 +457,7 @@ body {
     overflow: hidden;
 }
 
-.best .Best-swiper .swiper-slide .item .item_info .text span {
+.best .Best-swiper .swiper-slide .item .item_info .text > span {
     font-size: 14px;
     text-decoration: line-through;
     margin-top: 9px;
@@ -461,6 +469,8 @@ body {
     font-weight: 600;
     color: #F7B9C7;
     margin-top: 4px;
+    display: flex;
+    gap: 3px;
 }
 
 .best .Best-swiper .swiper-slide .item .item_info .text strong span {
@@ -481,6 +491,7 @@ body {
     display: flex;
     gap: 10px;
 }
+
 .best .inner .list {
     display: none;
 }
@@ -768,7 +779,7 @@ body {
     bottom: -40px;
 }
 
-.first_deal .inner .list{
+.first_deal .inner .list {
     display: none;
 }
 
@@ -804,9 +815,10 @@ body {
     margin-bottom: 10px;
 }
 
-.WY_pick .inner .image{
+.WY_pick .inner .image {
     width: 100%;
-} 
+}
+
 .WY_pick .inner .image img {
     width: 100%;
     height: 100%;
@@ -1064,12 +1076,25 @@ body {
 
 .footer .other_wrap .copyright li {}
 
+.new .inner .more_btn.tablet {
+    display: none;
+}
 
-@media screen and (min-width: 480px) and (max-width: 1024px) {
+.best .inner .title .period.tablet {
+    display: none
+}
+
+@media screen and (min-width: 1025px) {
     #wrap {
-        max-width: 1024px;
+        max-width: 1440px;
     }
 
+    .best .inner .period.tablet {
+        display: flex;
+    }
+    .bast .inner .title .mobile{
+        display: none;
+    }
     .new .swiper,
     .best .swiper,
     .first_deal .swiper {
@@ -1143,6 +1168,10 @@ body {
         margin-top: 40px;
     }
 
+    .new {
+        margin-bottom: 120px;
+    }
+
     .new .inner {
         padding-top: 30px;
         width: calc(100% - 64px);
@@ -1172,18 +1201,32 @@ body {
 
     .new .list .item a {
         width: 100%;
+        display: block;
+    }
+
+    .new .list .item a .image {
+        width: 100%;
+        padding-bottom: 100%;
+        position: relative;
+        border-radius: 5px;
+        overflow: hidden;
+        margin-bottom: 16px;
     }
 
     .new .list .item a .image img {
         width: 100%;
         height: 100%;
         object-fit: cover;
+        position: absolute;
+        left: 0;
+        top: 0;
     }
 
     .new .list .item a .text {
         display: flex;
         flex-direction: column;
         font-size: 20px;
+        margin-bottom: 16px;
     }
 
     .new .list .item a .text p {
@@ -1191,55 +1234,104 @@ body {
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 2;
         overflow: hidden;
+        margin-bottom: 8px;
     }
-    .new .list .item .icon{
+
+    .new .list .item a .text span {
+        margin-bottom: 4px;
+        text-decoration: line-through;
+        color: #828282;
+        font-size: 18px;
+    }
+
+    .new .list .item a .text strong {
+        color: #F7B9C7;
+    }
+
+    .new .list .item a .text strong span {
+        text-decoration: none;
+        color: #000;
+    }
+
+    .new .list .item .icon {
         display: flex;
+        gap: 10px;
     }
+
     .new .list .item .icon a {
         width: 24px;
         display: block;
     }
-    .new .list .item .icon a img{
+
+    .new .list .item .icon a img {
         width: 24px;
     }
-    .best .inner{
+
+    .new .list .item .icon a img.bag {
+        width: 23px;
+    }
+
+    .new .inner .more_btn.tablet {
+        margin-top: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .new .inner .more_btn.tablet a {
+        background-color: #fff;
+        color: #F7B9C7;
+        padding: 16px 32px;
+        border-radius: 50px;
+        border: 1px solid #F7B9C7;
+
+    }
+
+    .best .inner {
         width: calc(100% - 64px);
     }
-    .best .inner .list{
+
+    .best .inner .list {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
         gap: 16px;
     }
-    .best .inner .list .item{
+
+    .best .inner .list .item {
         width: 48.96%;
         display: flex;
         align-items: center;
         justify-content: 9px;
     }
-    .best .inner .list .item > img{
+
+    .best .inner .list .item>img {
         width: 150px;
         height: 150px;
     }
 
-    .first_deal .inner .list{
+    .first_deal .inner .list {
         display: flex;
         flex-wrap: wrap;
         gap: 16px;
         margin-top: 16px;
     }
-    .first_deal .inner .list .item{
+
+    .first_deal .inner .list .item {
         width: 48.96%;
         display: flex;
         align-items: center;
     }
-    .first_deal .list .item > img{
+
+    .first_deal .list .item>img {
         width: 150px;
         height: 150px;
         object-fit: cover;
         display: block;
     }
-    .first_deal .list .item .item_info{}
-    .first_deal .list .item .item_info .text{}
+
+    .first_deal .list .item .item_info {}
+
+    .first_deal .list .item .item_info .text {}
 
 }
