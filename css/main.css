@@ -405,7 +405,7 @@ body {
 
 .best .inner .title .text h3 {}
 
-.best .inner .title .text p {} 
+.best .inner .title .text p {}
 
 .best .inner .title .more_btn {
     font-size: 14px;
@@ -417,13 +417,16 @@ body {
     align-items: center;
 
 }
-.best .period li.is-active{
+
+.best .period li.is-active {
     background: rgba(247, 185, 200, 0.3);
 }
+
 .best .Best-swiper {
     margin-top: 20px;
     position: static;
 }
+
 .best .Best-swiper .swiper-slide .item {
     display: flex;
     align-items: center;
@@ -457,7 +460,7 @@ body {
     overflow: hidden;
 }
 
-.best .Best-swiper .swiper-slide .item .item_info .text > span {
+.best .Best-swiper .swiper-slide .item .item_info .text>span {
     font-size: 14px;
     text-decoration: line-through;
     margin-top: 9px;
@@ -661,6 +664,87 @@ body {
 .review .swiper-pagination-fraction {
     bottom: -40px;
 }
+
+
+/* === Review: 탭 하단 툴팁 (항상 표시, 꼬리 자동보정) === */
+.review .inner .tab_menu {
+    position: relative;
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+    overflow-y: visible;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    touch-action: pan-x;
+}
+
+.review .inner .tab_menu::-webkit-scrollbar {
+    height: 0;
+}
+
+.review .inner .tab_menu li {
+    white-space: nowrap;
+    font-weight: 700;
+    padding: 0 5px;
+}
+
+.review .inner .tab_menu li.is-active {
+    color: #E51644;
+}
+
+.review .inner .tab_menu.is-dragging {
+    cursor: grabbing;
+    user-select: none;
+}
+
+/* 툴팁 공통 */
+.tooltip {
+    pointer-events: none;
+}
+
+/* 뷰포트 기준 고정 말풍선 */
+.tooltip.tooltip--under.is-fixed {
+    position: fixed;
+    left: 0;
+    top: 0;
+    transform: translateY(0) scale(.98);
+    background: #F7B9C7;
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 9999px;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+    box-shadow: 0 8px 18px rgba(247, 185, 199, .55);
+    border: 1px solid rgba(255, 255, 255, .35);
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity .18s ease, transform .18s ease;
+}
+
+.tooltip.tooltip--under.is-fixed.on {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* 꼬리(탭 중앙 보정) */
+.tooltip.tooltip--under.is-fixed::after {
+    content: '';
+    position: absolute;
+    left: calc(50% + var(--tail-offset, 0px));
+    /* ← 꼬리 중심 보정 */
+    top: -7px;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid #F7B9C7;
+    filter: drop-shadow(0 -1px 0 rgba(255, 255, 255, .35));
+}
+
+
+
 
 .chance {
     background: url('../img/chance-01.png') center center / cover no-repeat;
@@ -1084,6 +1168,9 @@ body {
     display: none
 }
 
+
+
+
 @media screen and (min-width: 1025px) {
     #wrap {
         max-width: 1440px;
@@ -1092,9 +1179,11 @@ body {
     .best .inner .period.tablet {
         display: flex;
     }
-    .bast .inner .title .mobile{
+
+    .bast .inner .title .mobile {
         display: none;
     }
+
     .new .swiper,
     .best .swiper,
     .first_deal .swiper {
@@ -1335,3 +1424,4 @@ body {
     .first_deal .list .item .item_info .text {}
 
 }
+
