@@ -689,6 +689,7 @@ body {
 }
 
 .review .inner .tab_menu li.is-active {
+    font-size: 22px;
     color: #E51644;
 }
 
@@ -748,13 +749,15 @@ body {
 
 .chance {
     background: url('../img/chance-01.png') center center / cover no-repeat;
-    width: 100%;
+    width: calc(100% - 30px);
+    margin: 0 auto;
     height: 85px;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 4px;
     padding: 12px;
+    border-radius: 5px;
 }
 
 .chance img {
@@ -1468,6 +1471,17 @@ body {
     .review .inner .title {
         width: calc(100% - 64px);
     }
+    .chance{
+        height: 180px;
+        gap: 32px;
+    }
+    .chance img{
+        width: 129px;
+        height: 129px;
+    }
+    .chance p{
+        font-size: 28px;
+    }
     .first_deal .inner .title h3 {
         font-size: 40px;
     }
@@ -1520,4 +1534,51 @@ body {
 
     .first_deal .list .item .item_info .text {}
 
+    .WY_pick .inner .title h3 {
+        font-size: 40px;
+    }
+    .footer .inner .info_wrap{
+        gap: 50px;
+    }
+    
+    .footer .inner .info_wrap .bt_logo{
+        height: 35px;
+    }
+    .footer .inner .info_wrap .quick_menu li{
+        padding: 7px 11px;
+        font-size: 16px;
+    }
+    .footer .inner .info_wrap .tab_info{
+        gap: 30px;
+    }
+    .footer .inner .info_wrap .tab_info .text_wrap{
+        font-size: 16px;
+        gap: 40px;
+    }
+    .footer .inner .info_wrap .tab_info .tab_btn{
+        font-size: 16px;
+    }
+    .footer .other_wrap{
+        margin-top: 50px;
+    }
+    .footer .other_wrap .sns{
+        gap: 40px;
+    }
+    .footer .other_wrap .sns li{
+        width: 30px;
+    }
+    .footer .other_wrap .sns li a{
+        width: 100%;
+        display: block;
+    }
+    .footer .other_wrap .sns li a img{
+        width: 100%;
+    }
+    .footer .other_wrap .policy{
+        font-size: 16px;
+        gap: 20px;
+    }
+    .footer .other_wrap .copyright{
+        font-size: 16px;
+    }
 }
