@@ -353,7 +353,7 @@
 
                         <div class="more_btn tablet">
                             <a href="#">
-                                신상 자세히 보기
+                                신상 더보기
                             </a>
                         </div>
                     </div><!-- .inner end -->
@@ -386,6 +386,14 @@
                         <div class="Best-swiper swiper">
                             <div class="swiper-wrapper"></div>
                             <div class="swiper-pagination best-pagination"></div>
+                        </div>
+
+                        <!-- 태블릿 이상에서만 보일 리스트 -->
+                        <div class="list best-list"></div>
+                        <div class="more_btn tablet">
+                            <a href="#">
+                                베스트 더보기
+                            </a>
                         </div>
                     </div>
                 </section>
@@ -905,7 +913,6 @@
                     </div>
                 </template>
 
-                <!-- ===== 스크립트: 탭 클릭 → 템플릿 주입 → 스와이퍼 재생성 ===== -->
                 <script>
                     (() => {
                         const best = document.querySelector('.best');
@@ -915,6 +922,8 @@
                         const swiperEl = best.querySelector('.Best-swiper');
                         const wrapper = swiperEl.querySelector('.swiper-wrapper');
                         const paginationEl = best.querySelector('.best-pagination');
+
+                        const listEl = best.querySelector('.best-list'); // 우리가 추가한 리스트 영역
 
                         let swiperInstance = null;
 
@@ -936,12 +945,17 @@
                             });
                         }
 
-                        function loadSlidesFromTemplate(templateId) {
+                        // 템플릿 내용으로
+                        // 1) 모바일 Swiper용 슬라이드 주입
+                        // 2) 태블릿 리스트(.best-list)용 6개 아이템 뽑아서 주입
+                        function loadFromTemplate(templateId) {
                             const tpl = document.getElementById(templateId);
                             if (!tpl) {
                                 console.warn('[BEST] 템플릿을 찾을 수 없음:', templateId);
                                 return;
                             }
+
+                            // ---- 1) 스와이퍼 쪽 갱신 ----
                             wrapper.innerHTML = '';
                             wrapper.appendChild(tpl.content.cloneNode(true));
 
@@ -950,12 +964,34 @@
                                 swiperInstance = null;
                             }
                             swiperInstance = new Swiper(swiperEl, SWIPER_OPTIONS);
+
+                            // ---- 2) 리스트(6개만) 갱신 ----
+                            if (listEl) {
+                                listEl.innerHTML = '';
+
+                                // 템플릿 안에 있는 모든 .item 가져오기
+                                // (주의: tpl.content는 이미 clone으로 소비됐으니까 다시 tpl.content를 직접 쓰면 비어있어.
+                                // 그래서 위에서 wrapper에 append된 걸 기준으로 뽑자.)
+                                const allItems = wrapper.querySelectorAll('.item');
+
+                                // 앞에서부터 최대 6개만 사용
+                                const maxCount = 6;
+                                const fragment = document.createDocumentFragment();
+
+                                for (let i = 0; i < allItems.length && i < maxCount; i++) {
+                                    const cloneItem = allItems[i].cloneNode(true);
+                                    // cloneItem 구조는 <div class="item"><img ...><div class="item_info">...</div></div>
+                                    fragment.appendChild(cloneItem);
+                                }
+
+                                listEl.appendChild(fragment);
+                            }
                         }
 
                         tabs.forEach(tab => {
                             tab.addEventListener('click', () => {
                                 setActiveTab(tab);
-                                loadSlidesFromTemplate(tab.dataset.tpl);
+                                loadFromTemplate(tab.dataset.tpl);
                             });
                             tab.addEventListener('keydown', (e) => {
                                 if (e.key === 'Enter' || e.key === ' ') {
@@ -965,10 +1001,12 @@
                             });
                         });
 
+                        // 초기 진입시 (첫 탭)
                         setActiveTab(tabs[0]);
-                        loadSlidesFromTemplate(tabs[0].dataset.tpl);
+                        loadFromTemplate(tabs[0].dataset.tpl);
                     })();
                 </script>
+
 
                 <!-- ✅ REVIEW 템플릿: 탭별로 주입될 슬라이드 묶음 -->
                 <template id="review-tab1"><!-- #플럼핑_베베틴트 -->
@@ -1111,7 +1149,8 @@
                         <div class="item">
                             <div class="image_wrap">
                                 <img src="img/mamel-06.png" alt="">
-                                <p>일단 너무너무 예뻐요…실제로 보니 더 영롱했구요 너무 예뻐서 소장용이랑 실 사용용 따로 구매했는데도 내가 이걸 발라도 되나 죄책감이 들었을정도ㅋㅋㅋ…광택 / 촉촉함 보습용 립밤처럼 촉촉하거나 오일리하지는 않아요</p>
+                                <p>일단 너무너무 예뻐요…실제로 보니 더 영롱했구요 너무 예뻐서 소장용이랑 실 사용용 따로 구매했는데도 내가 이걸 발라도 되나 죄책감이 들었을정도ㅋㅋㅋ…광택
+                                    / 촉촉함 보습용 립밤처럼 촉촉하거나 오일리하지는 않아요</p>
                                 <div class="star">
                                     <img src="img/star-01.svg"><img src="img/star-01.svg"><img
                                         src="img/star-01.svg"><img src="img/star-01.svg"><img src="img/star-02.svg">
@@ -1127,7 +1166,8 @@
                         <div class="item">
                             <div class="image_wrap">
                                 <img src="img/mamel-04.jpg" alt="">
-                                <p>어뮤즈 쿠션이 쿠션 중에 제일 촉촉하고 좋은 것 같아요.이번에 제가 너무 좋아하는 마이멜로디 에디션이 나와서 바로 구매해 봤습니다. 역시나 촉촉하고 피부에 밀착되는 느낌이 너무 좋아요</p>
+                                <p>어뮤즈 쿠션이 쿠션 중에 제일 촉촉하고 좋은 것 같아요.이번에 제가 너무 좋아하는 마이멜로디 에디션이 나와서 바로 구매해 봤습니다. 역시나 촉촉하고
+                                    피부에 밀착되는 느낌이 너무 좋아요</p>
                                 <div class="star">
                                     <img src="img/star-01.svg"><img src="img/star-01.svg"><img
                                         src="img/star-01.svg"><img src="img/star-01.svg"><img src="img/star-02.svg">
@@ -1159,7 +1199,8 @@
                         <div class="item">
                             <div class="image_wrap">
                                 <img src="img/mamel-07.jpg" alt="">
-                                <p>어뮤즈 콜라보 하면 저항없이 사는 사람 저요.... 항상 세라믹 쿠션만 예쁜 케이스 나와서 아쉬웠는데 이번에 듀젤리로 케이스 콜라보해서 너무 좋았어요!!</p>
+                                <p>어뮤즈 콜라보 하면 저항없이 사는 사람 저요.... 항상 세라믹 쿠션만 예쁜 케이스 나와서 아쉬웠는데 이번에 듀젤리로 케이스 콜라보해서 너무 좋았어요!!
+                                </p>
                                 <div class="star">
                                     <img src="img/star-01.svg"><img src="img/star-01.svg"><img
                                         src="img/star-01.svg"><img src="img/star-01.svg"><img src="img/star-02.svg">
@@ -1178,7 +1219,8 @@
                         <div class="item">
                             <div class="image_wrap">
                                 <img src="img/jell-01.jpg" alt="">
-                                <p>사실 키링때문에 샀지만🤓 평소 잘 사용하는 젤핏틴트 미니버전으로 가지고 있으면, 무겁게 틴트 여러개 안가지고 다녀도 좋을것같아서 겸사겸사 구매해봤네요.</p>
+                                <p>사실 키링때문에 샀지만🤓 평소 잘 사용하는 젤핏틴트 미니버전으로 가지고 있으면, 무겁게 틴트 여러개 안가지고 다녀도 좋을것같아서 겸사겸사 구매해봤네요.
+                                </p>
                                 <div class="star">
                                     <img src="img/star-01.svg"><img src="img/star-01.svg"><img
                                         src="img/star-01.svg"><img src="img/star-01.svg"><img src="img/star-01.svg">
@@ -1210,7 +1252,8 @@
                         <div class="item">
                             <div class="image_wrap">
                                 <img src="img/jell-04.jpg" alt="">
-                                <p>구매한지 하루만에 빠른배송으로 받았습니다 받자마자 소리를 꺄!!! 지르게되는 젤핏틴트 06서울걸의 영롱한 컬러!!!!!!! 듀밤도 써봤는데 이건진짜 쫀쫀하게 핏되면서 입술진쨔 너무 이뻐보여요</p>
+                                <p>구매한지 하루만에 빠른배송으로 받았습니다 받자마자 소리를 꺄!!! 지르게되는 젤핏틴트 06서울걸의 영롱한 컬러!!!!!!! 듀밤도 써봤는데 이건진짜
+                                    쫀쫀하게 핏되면서 입술진쨔 너무 이뻐보여요</p>
                                 <div class="star">
                                     <img src="img/star-01.svg"><img src="img/star-01.svg"><img
                                         src="img/star-01.svg"><img src="img/star-01.svg"><img src="img/star-01.svg">
@@ -1242,7 +1285,8 @@
                         <div class="item">
                             <div class="image_wrap">
                                 <img src="img/jell-06.jpg" alt="">
-                                <p>the product is good nice and amazing!?!? 😻 the price is also good and i really like it</p>
+                                <p>the product is good nice and amazing!?!? 😻 the price is also good and i really like
+                                    it</p>
                                 <div class="star">
                                     <img src="img/star-01.svg"><img src="img/star-01.svg"><img
                                         src="img/star-01.svg"><img src="img/star-01.svg"><img src="img/star-01.svg">
@@ -1277,7 +1321,8 @@
                         <div class="item">
                             <div class="image_wrap">
                                 <img src="img/air-01.png" alt="">
-                                <p>“에어리”라는 이름에 진심 담겨있음…진짜 내 피부 위에 무게감 없이"슉— 슈욱—" 발리는데모공 커버력 실화야??! 어뮤즈는 원래 색감 맛집인 거 알지?이번 네추럴 컬러는 톤에 너무 잘 어우러져서피부가 원래 이렇게 예뻤던 사람처럼 보여주는 마법※</p>
+                                <p>“에어리”라는 이름에 진심 담겨있음…진짜 내 피부 위에 무게감 없이"슉— 슈욱—" 발리는데모공 커버력 실화야??! 어뮤즈는 원래 색감 맛집인 거
+                                    알지?이번 네추럴 컬러는 톤에 너무 잘 어우러져서피부가 원래 이렇게 예뻤던 사람처럼 보여주는 마법※</p>
                                 <div class="star">
                                     <img src="img/star-01.svg"><img src="img/star-01.svg"><img
                                         src="img/star-01.svg"><img src="img/star-01.svg"><img src="img/star-02.svg">
@@ -1293,7 +1338,8 @@
                         <div class="item">
                             <div class="image_wrap">
                                 <img src="img/air-03.png" alt="">
-                                <p>어뮤즈 라인 완전 애정합니당ㅎㅎ여름이라 피부 메이크업을 두텁게 하는 게 너무 부담스러워서 최대한 가볍고 커버력 좋은 제품을 찾다 보니 역시나 또 어뮤즈 밖에 없더라고요.</p>
+                                <p>어뮤즈 라인 완전 애정합니당ㅎㅎ여름이라 피부 메이크업을 두텁게 하는 게 너무 부담스러워서 최대한 가볍고 커버력 좋은 제품을 찾다 보니 역시나 또 어뮤즈
+                                    밖에 없더라고요.</p>
                                 <div class="star">
                                     <img src="img/star-01.svg"><img src="img/star-01.svg"><img
                                         src="img/star-01.svg"><img src="img/star-01.svg"><img src="img/star-02.svg">
@@ -1309,7 +1355,8 @@
                         <div class="item">
                             <div class="image_wrap">
                                 <img src="img/air-04.png" alt="">
-                                <p>워낙 모공이 도드라지는 피부라 쿠션 고를 때 늘 신중한 편인데, 이 제품은 이름처럼 정말 ‘에어리’하다는 표현이 딱이에요. 피부에 올렸을 때 답답하지 않고 얇게 밀착돼서 두꺼운 느낌 없이 보송하게 마무리돼요. </p>
+                                <p>워낙 모공이 도드라지는 피부라 쿠션 고를 때 늘 신중한 편인데, 이 제품은 이름처럼 정말 ‘에어리’하다는 표현이 딱이에요. 피부에 올렸을 때 답답하지
+                                    않고 얇게 밀착돼서 두꺼운 느낌 없이 보송하게 마무리돼요. </p>
                                 <div class="star">
                                     <img src="img/star-01.svg"><img src="img/star-01.svg"><img
                                         src="img/star-01.svg"><img src="img/star-01.svg"><img src="img/star-02.svg">
@@ -1376,7 +1423,8 @@
                         <div class="item">
                             <div class="image_wrap">
                                 <img src="img/flower-01.png" alt="">
-                                <p>체험단 활동으로 어뮤즈 꽃 아이 팔레크 02 로즈리나를 받았어요🩷 매끄럽고 선명하게 발색되는데, 너무 흰끼가 많지 않은 중명도의 기본을 지킨 팔레트였어요!</p>
+                                <p>체험단 활동으로 어뮤즈 꽃 아이 팔레크 02 로즈리나를 받았어요🩷 매끄럽고 선명하게 발색되는데, 너무 흰끼가 많지 않은 중명도의 기본을 지킨
+                                    팔레트였어요!</p>
                                 <div class="star">
                                     <img src="img/star-01.svg"><img src="img/star-01.svg"><img
                                         src="img/star-01.svg"><img src="img/star-01.svg"><img src="img/star-01.svg">
@@ -1392,7 +1440,8 @@
                         <div class="item">
                             <div class="image_wrap">
                                 <img src="img/flower-02.png" alt="">
-                                <p>저는 어뮤즈 화장품이 제 파우치의 거의 전부인 어뮤즈 진심녀라 이번에도 엄청 기대했어요! 역시나.. 일을 냈어요!! 1. 다섯 색상 모두 예쁘고 2. 중요 색상만 알차게 구성돼 있으며 3. 블랜딩도 예쁘게 잘 되고 4. 무너짐도 없는 그야말로 완벽한 제품이에요🩷</p>
+                                <p>저는 어뮤즈 화장품이 제 파우치의 거의 전부인 어뮤즈 진심녀라 이번에도 엄청 기대했어요! 역시나.. 일을 냈어요!! 1. 다섯 색상 모두 예쁘고 2.
+                                    중요 색상만 알차게 구성돼 있으며 3. 블랜딩도 예쁘게 잘 되고 4. 무너짐도 없는 그야말로 완벽한 제품이에요🩷</p>
                                 <div class="star">
                                     <img src="img/star-01.svg"><img src="img/star-01.svg"><img
                                         src="img/star-01.svg"><img src="img/star-01.svg"><img src="img/star-01.svg">
@@ -1408,7 +1457,8 @@
                         <div class="item">
                             <div class="image_wrap">
                                 <img src="img/flower-03.png" alt="">
-                                <p>어뮤즈는 쿠션이랑 립 제품만 써봤었는데 이번에 섀도우가 필요해서 찾아보다가 이 쿠로미 콜라보 팔레트를 보고 그냥 못 지나치겠더라고요. 꽃모양 패키지가 너무 예쁘고 케이스도 반짝반짝해요!</p>
+                                <p>어뮤즈는 쿠션이랑 립 제품만 써봤었는데 이번에 섀도우가 필요해서 찾아보다가 이 쿠로미 콜라보 팔레트를 보고 그냥 못 지나치겠더라고요. 꽃모양 패키지가
+                                    너무 예쁘고 케이스도 반짝반짝해요!</p>
                                 <div class="star">
                                     <img src="img/star-01.svg"><img src="img/star-01.svg"><img
                                         src="img/star-01.svg"><img src="img/star-01.svg"><img src="img/star-01.svg">
@@ -1440,7 +1490,8 @@
                         <div class="item">
                             <div class="image_wrap">
                                 <img src="img/flower-05.png" alt="">
-                                <p>어뮤즈 꽃 아이 팔레트는 케이스부터 너무 예뻐서 선물용으로도 좋고 소장가치도 있는 느낌이에요 꽃 모양 케이스라 꺼내 쓸 때마다 기분이 좋아지고 화장대 위에 올려두기만 해도 분위기 살아요</p>
+                                <p>어뮤즈 꽃 아이 팔레트는 케이스부터 너무 예뻐서 선물용으로도 좋고 소장가치도 있는 느낌이에요 꽃 모양 케이스라 꺼내 쓸 때마다 기분이 좋아지고 화장대
+                                    위에 올려두기만 해도 분위기 살아요</p>
                                 <div class="star">
                                     <img src="img/star-01.svg"><img src="img/star-01.svg"><img
                                         src="img/star-01.svg"><img src="img/star-01.svg"><img src="img/star-01.svg">
@@ -1456,7 +1507,8 @@
                         <div class="item">
                             <div class="image_wrap">
                                 <img src="img/flower-06.png" alt="">
-                                <p>너무 사랑스러운 마이멜로디 기획이라니 안 살 수가 없었네요!! 색감은 봄웜톤에게 잘 맞는 느낌이에요! 꽃모양 디자인이 너무 예쁘고 작아서 휴대하기 편해요</p>
+                                <p>너무 사랑스러운 마이멜로디 기획이라니 안 살 수가 없었네요!! 색감은 봄웜톤에게 잘 맞는 느낌이에요! 꽃모양 디자인이 너무 예쁘고 작아서 휴대하기 편해요
+                                </p>
                                 <div class="star">
                                     <img src="img/star-01.svg"><img src="img/star-01.svg"><img
                                         src="img/star-01.svg"><img src="img/star-01.svg"><img src="img/star-01.svg">
